@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-dark-400 text-light-300 font-sans;
+  overflow-x: hidden;
+}
+
+.gradient-bg {
+  @apply bg-gradient-to-br from-dark-300 via-dark-400 to-dark-300;
+}
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(145deg, rgba(105, 134, 137, 0.5), rgba(71, 103, 107, 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glass-panel {
+  @apply bg-dark-300 bg-opacity-70 backdrop-blur-sm border border-dark-100;
+}
+
+.transaction-item:hover .transaction-details {
+  @apply max-h-40 opacity-100;
+}
+
+.transaction-details {
+  @apply max-h-0 opacity-0 overflow-hidden transition-all duration-300;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-300;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary-600;
+}
+
+/* Animation for particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(105, 134, 137, 0.6);
+  box-shadow: 0 0 10px rgba(105, 134, 137, 0.8);
+}
+
+@keyframes floating {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-10px) translateX(5px);
+  }
+}
+
+.floating {
+  animation: floating 5s ease-in-out infinite;
+}
+
+.floating-delay-1 {
+  animation-delay: 1s;
+}
+
+.floating-delay-2 {
+  animation-delay: 2s;
+}
+
+.green-glow {
+  box-shadow: 0 0 10px rgba(105, 134, 137, 0.5), 
+              0 0 20px rgba(105, 134, 137, 0.3), 
+              0 0 30px rgba(105, 134, 137, 0.1);
+}
+
+.bg-animate-gradient {
+  background-size: 400% 400%;
+  animation: gradient-animation 15s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
