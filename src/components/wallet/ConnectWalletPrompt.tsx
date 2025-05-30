@@ -21,7 +21,7 @@ const ConnectWalletPrompt: React.FC = () => {
           </div>
           
           <motion.div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full"
+            className="absolute top-0 left-0 w-20 h-20 rounded-full"
             initial={{ scale: 1 }}
             animate={{ scale: 1.2, opacity: 0 }}
             transition={{ 
