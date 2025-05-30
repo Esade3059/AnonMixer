@@ -7,14 +7,16 @@ const ContractAddress: React.FC = () => {
   const { contractAddress, isLoading, error } = useContract();
   const [showCopied, setShowCopied] = useState(false);
 
-  console.log('ContractAddress component render:', { contractAddress, isLoading, error });
-
   const copyToClipboard = async () => {
     if (contractAddress) {
       try {
         await navigator.clipboard.writeText(contractAddress);
         setShowCopied(true);
-        setTimeout(() => setShowCopied(false), 2000);
+        // Clear any existing timeout
+        const timeoutId = setTimeout(() => {
+          setShowCopied(false);
+        }, 2000);
+        return () => clearTimeout(timeoutId);
       } catch (err) {
         console.error('Failed to copy:', err);
       }
@@ -22,7 +24,6 @@ const ContractAddress: React.FC = () => {
   };
 
   if (isLoading) {
-    console.log('Rendering loading state');
     return (
       <motion.div 
         initial={{ opacity: 0 }}
@@ -35,7 +36,6 @@ const ContractAddress: React.FC = () => {
   }
 
   if (error) {
-    console.log('Rendering error state:', error);
     return (
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
@@ -48,7 +48,6 @@ const ContractAddress: React.FC = () => {
   }
 
   if (!contractAddress || typeof contractAddress !== 'string' || contractAddress.trim() === '') {
-    console.log('Rendering no contract state');
     return (
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
@@ -60,7 +59,6 @@ const ContractAddress: React.FC = () => {
     );
   }
 
-  console.log('Rendering contract address:', contractAddress);
   return (
     <div className="relative">
       <motion.div 
