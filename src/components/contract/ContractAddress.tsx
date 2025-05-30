@@ -69,7 +69,7 @@ const ContractAddress: React.FC = () => {
   }
 
   return (
-    <div className="relative">
+    <>
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -97,18 +97,18 @@ const ContractAddress: React.FC = () => {
         {showCopied && (
           <motion.div
             key="toast"
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="absolute left-1/2 -translate-x-1/2 -bottom-16 bg-primary-500/90 backdrop-blur-sm text-light-100 px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 z-50"
+            className="fixed top-4 left-1/2 -translate-x-1/2 bg-primary-500/90 backdrop-blur-sm text-light-100 px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50"
           >
-            <Check className="w-4 h-4" />
+            <Check className="w-5 h-5" />
             <span className="text-sm font-medium">Copied CA!</span>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 };
 
