@@ -16,21 +16,20 @@ const ConnectWalletPrompt: React.FC = () => {
         className="max-w-md w-full mx-auto text-center p-8"
       >
         <div className="mb-6 relative">
-          <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center shadow-lg">
+          <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center shadow-lg relative">
             <Wallet className="w-10 h-10 text-dark-400" />
+            <motion.div 
+              className="absolute inset-0 rounded-full"
+              initial={{ scale: 1 }}
+              animate={{ scale: 1.2, opacity: 0 }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 2,
+                repeatType: "loop"
+              }}
+              style={{ border: '1px solid #33FF6A' }}
+            />
           </div>
-          
-          <motion.div 
-            className="absolute top-0 left-0 w-20 h-20 rounded-full"
-            initial={{ scale: 1 }}
-            animate={{ scale: 1.2, opacity: 0 }}
-            transition={{ 
-              repeat: Infinity, 
-              duration: 2,
-              repeatType: "loop"
-            }}
-            style={{ border: '1px solid #33FF6A' }}
-          />
         </div>
         
         <h2 className="text-2xl font-bold mb-2 text-light-100">Connect Your Wallet</h2>

@@ -10,8 +10,10 @@ import ContractAddress from '../components/contract/ContractAddress';
 const Dashboard: React.FC = () => {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-light-100">Dashboard</h1>
-      <ContractAddress />
+      <div className="flex flex-col items-center space-y-4">
+        <h1 className="text-2xl font-bold text-light-100">Dashboard</h1>
+        <ContractAddress />
+      </div>
       <div className="space-y-8">
         <div className="bg-gradient-to-r from-dark-300 to-dark-200 rounded-xl p-8 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-full h-full bg-hero-pattern opacity-10" />
