@@ -23,22 +23,52 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           throw new Error('Supabase client is not configured');
         }
 
+        console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+        console.log('Fetching contract data...');
+
+        // First, let's check if we can access the table
+        const { data: tableCheck, error: tableError } = await supabase
+          .from('contracts')
+          .select('count')
+          .limit(1);
+
+        console.log('Table check response:', { tableCheck, tableError });
+        console.log('Table check data type:', typeof tableCheck);
+        console.log('Table check data:', tableCheck);
+        console.log('Table check error:', tableError);
+
+        // Now fetch the actual data
         const { data, error } = await supabase
           .from('contracts')
-          .select('contract_address')
+          .select('*')
           .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
+          .limit(1);
+
+        console.log('Raw response:', { data, error });
+        console.log('Data type:', typeof data);
+        console.log('Data length:', data?.length);
+        console.log('First row:', data?.[0]);
+        console.log('Contract address type:', typeof data?.[0]?.contract_address);
+        console.log('Contract address value:', data?.[0]?.contract_address);
 
         if (error) {
-          if (error.code === 'PGRST116') {
-            // No data found - this is not an error
-            setContractAddress(null);
+          console.error('Supabase error:', error);
+          throw error;
+        }
+
+        if (data && data.length > 0) {
+          const address = data[0].contract_address;
+          console.log('Found contract address:', address);
+          if (typeof address === 'string' && address.trim().length > 0) {
+            setContractAddress(address);
+            setError(null);
           } else {
-            throw error;
+            console.error('Invalid contract address format:', address);
+            setError('Invalid contract address format');
           }
-        } else if (data) {
-          setContractAddress(data.contract_address);
+        } else {
+          console.log('No contract address found in database');
+          setContractAddress(null);
         }
       } catch (err) {
         console.error('Contract fetch error:', err);
@@ -51,28 +81,41 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     fetchContractData();
 
     // Subscribe to realtime updates
+    console.log('Setting up realtime subscription...');
     const subscription = supabase
       .channel('contract-changes')
       .on(
         'postgres_changes',
         {
-          event: 'INSERT',
+          event: '*',
           schema: 'public',
           table: 'contracts',
         },
         (payload) => {
+          console.log('Realtime update received:', payload);
           const newContract = payload.new as ContractData;
-          setContractAddress(newContract.contract_address);
-          setError(null); // Clear any previous errors
+          if (newContract && newContract.contract_address) {
+            console.log('Setting new contract address:', newContract.contract_address);
+            setContractAddress(newContract.contract_address);
+            setError(null);
+          }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Subscription status:', status);
+      });
 
     // Cleanup subscription on unmount
     return () => {
+      console.log('Cleaning up subscription...');
       subscription.unsubscribe();
     };
   }, []);
+
+  // Log state changes
+  useEffect(() => {
+    console.log('Contract state updated:', { contractAddress, isLoading, error });
+  }, [contractAddress, isLoading, error]);
 
   return (
     <ContractContext.Provider value={{ contractAddress, isLoading, error }}>

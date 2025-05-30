@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 export interface ContractData {
   id: number;
   contract_address: string;
+  created_at: string;
 }
 
 // Create a single supabase client for interacting with your database
@@ -14,4 +15,14 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey); 
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  db: {
+    schema: 'public'
+  },
+  global: {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  }
+}); 

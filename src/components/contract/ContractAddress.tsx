@@ -5,6 +5,8 @@ import { Copy } from 'lucide-react';
 const ContractAddress: React.FC = () => {
   const { contractAddress, isLoading, error } = useContract();
 
+  console.log('ContractAddress component render:', { contractAddress, isLoading, error });
+
   const copyToClipboard = async () => {
     if (contractAddress) {
       try {
@@ -16,6 +18,7 @@ const ContractAddress: React.FC = () => {
   };
 
   if (isLoading) {
+    console.log('Rendering loading state');
     return (
       <div className="animate-pulse bg-dark-200 rounded-lg p-4">
         <div className="h-4 bg-dark-300 rounded w-3/4"></div>
@@ -24,6 +27,7 @@ const ContractAddress: React.FC = () => {
   }
 
   if (error) {
+    console.log('Rendering error state:', error);
     return (
       <div className="bg-error-500/10 border border-error-500 rounded-lg p-4 text-error-500">
         Error: {error}
@@ -31,7 +35,8 @@ const ContractAddress: React.FC = () => {
     );
   }
 
-  if (!contractAddress) {
+  if (!contractAddress || typeof contractAddress !== 'string' || contractAddress.trim() === '') {
+    console.log('Rendering no contract state');
     return (
       <div className="bg-primary-500/10 border border-primary-500 rounded-lg p-4">
         <p className="text-primary-400 font-medium text-center">Launching in Q2 2025</p>
@@ -39,6 +44,7 @@ const ContractAddress: React.FC = () => {
     );
   }
 
+  console.log('Rendering contract address:', contractAddress);
   return (
     <div className="bg-dark-200 rounded-lg p-4">
       <div className="flex items-center justify-between">
