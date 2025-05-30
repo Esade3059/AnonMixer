@@ -1,13 +1,16 @@
 services:
   - type: web
-    name: anonmixer
+    name: anonmixer-backend
     env: node
-    buildCommand: npm install && npm run build
-    startCommand: npm run preview
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
-      - key: VITE_SUPABASE_URL
+      - key: SUPABASE_URL
         sync: false
-      - key: VITE_SUPABASE_ANON_KEY
+      - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
-    healthCheckPath: /
+      - key: FRONTEND_URL
+        sync: false
+    healthCheckPath: /api/contract
     autoDeploy: true 
