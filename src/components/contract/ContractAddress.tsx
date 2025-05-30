@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useContract } from '../../context/ContractContext';
-import { Copy } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Copy, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ContractAddress: React.FC = () => {
   const { contractAddress, isLoading, error } = useContract();
+  const [showCopied, setShowCopied] = useState(false);
 
   console.log('ContractAddress component render:', { contractAddress, isLoading, error });
 
@@ -12,6 +13,8 @@ const ContractAddress: React.FC = () => {
     if (contractAddress) {
       try {
         await navigator.clipboard.writeText(contractAddress);
+        setShowCopied(true);
+        setTimeout(() => setShowCopied(false), 2000);
       } catch (err) {
         console.error('Failed to copy:', err);
       }
@@ -59,28 +62,45 @@ const ContractAddress: React.FC = () => {
 
   console.log('Rendering contract address:', contractAddress);
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-dark-200 rounded-lg p-4 max-w-2xl mx-auto"
-    >
+    <div className="relative">
       <motion.div 
-        className="flex items-center justify-between"
-        whileHover={{ scale: 1.01 }}
-        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-dark-200 rounded-lg p-4 max-w-2xl mx-auto"
       >
-        <p className="font-mono text-light-100 break-all">{contractAddress}</p>
-        <motion.button
-          onClick={copyToClipboard}
-          className="p-2 hover:bg-dark-300 rounded-lg transition-colors ml-4"
-          title="Copy to clipboard"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
+        <motion.div 
+          className="flex items-center justify-between"
+          whileHover={{ scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
-          <Copy className="w-5 h-5 text-light-300/60" />
-        </motion.button>
+          <p className="font-mono text-light-100 break-all">{contractAddress}</p>
+          <motion.button
+            onClick={copyToClipboard}
+            className="p-2 hover:bg-dark-300 rounded-lg transition-colors ml-4"
+            title="Copy to clipboard"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Copy className="w-5 h-5 text-light-300/60" />
+          </motion.button>
+        </motion.div>
       </motion.div>
-    </motion.div>
+
+      <AnimatePresence>
+        {showCopied && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            className="absolute left-1/2 -translate-x-1/2 -bottom-16 bg-primary-500/90 backdrop-blur-sm text-light-100 px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+          >
+            <Check className="w-4 h-4" />
+            <span className="text-sm font-medium">Copied CA!</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
