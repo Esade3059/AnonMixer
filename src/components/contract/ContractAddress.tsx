@@ -33,8 +33,8 @@ const ContractAddress: React.FC = () => {
 
   if (!contractAddress) {
     return (
-      <div className="bg-warning-500/10 border border-warning-500 rounded-lg p-4 text-warning-500">
-        Contract address not yet available
+      <div className="bg-primary-500/10 border border-primary-500 rounded-lg p-4">
+        <p className="text-primary-400 font-medium text-center">Launching in Q2 2025</p>
       </div>
     );
   }

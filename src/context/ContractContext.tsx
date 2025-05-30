@@ -18,6 +18,11 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // Initial fetch of contract data
     const fetchContractData = async () => {
       try {
+        // Check if Supabase is configured
+        if (!supabase) {
+          throw new Error('Supabase client is not configured');
+        }
+
         const { data, error } = await supabase
           .from('contracts')
           .select('contract_address')
@@ -25,12 +30,18 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           .limit(1)
           .single();
 
-        if (error) throw error;
-
-        if (data) {
+        if (error) {
+          if (error.code === 'PGRST116') {
+            // No data found - this is not an error
+            setContractAddress(null);
+          } else {
+            throw error;
+          }
+        } else if (data) {
           setContractAddress(data.contract_address);
         }
       } catch (err) {
+        console.error('Contract fetch error:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch contract data');
       } finally {
         setIsLoading(false);
@@ -52,6 +63,7 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         (payload) => {
           const newContract = payload.new as ContractData;
           setContractAddress(newContract.contract_address);
+          setError(null); // Clear any previous errors
         }
       )
       .subscribe();
