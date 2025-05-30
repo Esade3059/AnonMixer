@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useContract } from '../../context/ContractContext';
 import { Copy, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,16 +7,25 @@ const ContractAddress: React.FC = () => {
   const { contractAddress, isLoading, error } = useContract();
   const [showCopied, setShowCopied] = useState(false);
 
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    if (showCopied) {
+      timeoutId = setTimeout(() => {
+        setShowCopied(false);
+      }, 2000);
+    }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [showCopied]);
+
   const copyToClipboard = async () => {
     if (contractAddress) {
       try {
         await navigator.clipboard.writeText(contractAddress);
         setShowCopied(true);
-        // Clear any existing timeout
-        const timeoutId = setTimeout(() => {
-          setShowCopied(false);
-        }, 2000);
-        return () => clearTimeout(timeoutId);
       } catch (err) {
         console.error('Failed to copy:', err);
       }
@@ -84,14 +93,15 @@ const ContractAddress: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {showCopied && (
           <motion.div
+            key="toast"
             initial={{ opacity: 0, y: 10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="absolute left-1/2 -translate-x-1/2 -bottom-16 bg-primary-500/90 backdrop-blur-sm text-light-100 px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+            className="absolute left-1/2 -translate-x-1/2 -bottom-16 bg-primary-500/90 backdrop-blur-sm text-light-100 px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 z-50"
           >
             <Check className="w-4 h-4" />
             <span className="text-sm font-medium">Copied CA!</span>
