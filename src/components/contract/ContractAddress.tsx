@@ -80,7 +80,10 @@ const ContractAddress: React.FC = () => {
           whileHover={{ scale: 1.01 }}
           transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
-          <p className="font-mono text-light-100 break-all">{contractAddress}</p>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-success-500 animate-pulse" />
+            <p className="font-mono text-light-100 break-all">{contractAddress}</p>
+          </div>
           <motion.button
             onClick={copyToClipboard}
             className="p-2 hover:bg-dark-300 rounded-lg transition-colors ml-4"
