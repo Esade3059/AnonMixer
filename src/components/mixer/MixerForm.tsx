@@ -51,8 +51,8 @@ const MixerForm: React.FC = () => {
     if (!formData.recipientAddress.trim()) {
       newErrors.recipientAddress = 'Recipient address is required';
       isValid = false;
-    } else if (!formData.recipientAddress.startsWith('0x') || formData.recipientAddress.length < 10) {
-      newErrors.recipientAddress = 'Invalid wallet address format';
+    } else if (formData.recipientAddress.length < 42 || formData.recipientAddress.length > 46) {
+      newErrors.recipientAddress = 'Invalid wallet address';
       isValid = false;
     }
 
