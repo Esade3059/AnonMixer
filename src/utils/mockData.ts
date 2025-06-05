@@ -47,6 +47,21 @@ export const mockPools: MixingPool[] = [
       min: 10,
       max: 45
     }
+  },
+  {
+    id: 'sol-pool',
+    name: 'Solana Mixer',
+    currency: 'Solana',
+    liquidity: 12500,
+    anonymityScore: 90,
+    fee: 1.0,
+    minAmount: 0.5,
+    maxAmount: 100,
+    participantsCount: 856,
+    processingTime: {
+      min: 20,
+      max: 90
+    }
   }
 ];
 

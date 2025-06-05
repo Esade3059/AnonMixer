@@ -18,7 +18,7 @@ const mockBalances: WalletBalance[] = [
   { currency: 'Bitcoin', amount: 0.45, symbol: 'BTC' },
   { currency: 'Ethereum', amount: 3.2, symbol: 'ETH' },
   { currency: 'USDC', amount: 1250.75, symbol: 'USDC' },
-  { currency: 'Anonimity Coin', amount: 42000, symbol: 'ANON' }
+  { currency: 'Solana', amount: 25.5, symbol: 'SOL' }
 ];
 
 export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

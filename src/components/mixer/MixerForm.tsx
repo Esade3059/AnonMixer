@@ -152,11 +152,13 @@ const MixerForm: React.FC = () => {
                 name="recipientAddress"
                 value={formData.recipientAddress}
                 onChange={handleInputChange}
-                className="w-full bg-dark-200 border border-dark-100 text-light-300 rounded-lg p-2.5 focus:ring-primary-500 focus:border-primary-500 font-mono"
-                placeholder="0x..."
+                placeholder="Input your wallet address"
+                className="w-full bg-dark-200 border border-dark-100 text-light-300 rounded-lg p-2.5 focus:ring-primary-500 focus:border-primary-500"
                 required
               />
-              {errors.recipientAddress && <p className="mt-1 text-sm text-error-500">{errors.recipientAddress}</p>}
+              {errors.recipientAddress && (
+                <p className="mt-1 text-sm text-error-500">{errors.recipientAddress}</p>
+              )}
             </div>
 
             <div>
